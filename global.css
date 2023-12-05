@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --action-action-m: Inter;
+  --font-sf-pro-text: "SF Pro Text";
+
+  /* font sizes */
+  --action-action-m-size: 12px;
+  --heading-h3-size: 16px;
+  --body-body-m-size: 14px;
+  --body-body-xs-size: 10px;
+
+  /* Colors */
+  --neutral-light-lightest: #fff;
+  --highlight-darkest: #006ffd;
+  --blue-blue: #0071e3;
+  --neutral-dark-lightest: #8f9098;
+  --neutral-dark-darkest: #1f2024;
+  --black-black: #1d1d1f;
+  --black-14: rgba(29, 29, 31, 0.14);
+  --color-black: #000;
+  --neutral-light-dark: #d4d6dd;
+  --neutral-dark-light: #71727a;
+  --neutral-light-darkest: #c5c6cc;
+  --highlight-lightest: #eaf2ff;
+  --neutral-dark-dark: #2f3036;
+
+  /* Gaps */
+  --gap-5xs: 8px;
+  --gap-5xl: 24px;
+  --gap-9xs: 4px;
+  --gap-base: 16px;
+  --gap-7xs: 6px;
+  --gap-12xs: 1px;
+  --gap-3xs: 10px;
+
+  /* Paddings */
+  --padding-xs: 12px;
+  --padding-base: 16px;
+  --padding-7xs: 6px;
+  --padding-12xs: 1px;
+
+  /* Border radiuses */
+  --br-xs: 12px;
+  --br-11xs-2: 1.2px;
+  --br-481xl: 500px;
+  --br-7xs: 6px;
+
+  /* Effects */
+  --frosted-glass: blur(40px);
+}
