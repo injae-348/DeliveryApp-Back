@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Restaurant, Menu, MenuOption, Dib, MenuImage
+from .models import Restaurant, Menu, MenuOption, Dib, MenuImage, Qrcode
 
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,3 +26,10 @@ class DibSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dib
         fields = ['dibId','userId','storeId','status']
+
+# QR 추가
+class QrcodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Qrcode
+        fields = '__all__'
+

@@ -88,3 +88,15 @@ class Dib(models.Model):
 
     def __str__(self):
         return f"userId: {self.userId} - storeId: {self.storeId}"
+    
+
+# QR 추가
+class Qrcode(models.Model):
+    userId = models.ForeignKey('user_app.CustomUser', on_delete=models.CASCADE)
+    orderId = models.ForeignKey('orders_app.Order', on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='생성일')
+    return_date = models.DateTimeField(auto_now_add=True, verbose_name='반납일자')
+    status = models.CharField(max_length=255, default='미반납', verbose_name='상태')
+
+    def __str__(self):
+        return f'QR코드 - {self.id}'    

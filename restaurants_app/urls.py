@@ -19,6 +19,10 @@ urlpatterns = [
     
     path('restaurants/',views.RestaurantListView.as_view(),name='restaurants-list'),
     path('restaurants/<int:pk>/',views.RestaurantDetailView.as_view(),name='restaurants-detail'),
+
+    # QR 추가
+    path('qrcode/', views.QrcodeAPIView.as_view(), name='qrcode'),
+    path('qrcode/read/verify/', views.VerifyQrcodeAPIView.as_view(), name='qrcode-verify')    
 ]
 
 # MenuImage

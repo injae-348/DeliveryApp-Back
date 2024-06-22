@@ -20,6 +20,9 @@ urlpatterns = [
 
     path('api/address/',views.AddressListCreateView.as_view(),name='address-list-create'),
     path('api/address/<int:pk>/',views.AddressRetrieveUpdateDestroyView.as_view(),name='address-retrieve-update-destroy'),
+    
+    # 주소
+    path('address/',views.TemplateView.as_view(template_name='address/address.html')),
 
     path('api/reward/',views.RewardCreateView.as_view(),name='reward-create'),
     path('api/reward/<int:pk>/',views.RewardRetrieveUpdateDestroyView.as_view(),name='reward-retrieve-update-destroy'),

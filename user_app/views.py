@@ -8,6 +8,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
+from django.views.generic import TemplateView
 
 from .serializers import RegisterSerializer, LoginSerializer, CustomUserSerializer, AddressSerializer, RewardSerializer
 from .models import CustomUser, Address, Reward
@@ -195,3 +196,4 @@ class RewardRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    

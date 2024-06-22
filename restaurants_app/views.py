@@ -6,9 +6,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from .permissions import IsRestaurantAdminOrReadOnly, CustomListRetrievePermission, IsOwnerOrReadOnly, IsOwnerOrReadOnlyOption
 
-from .models import Restaurant, Menu, MenuOption, Dib, MenuImage
-from .serializers import RestaurantSerializer, MenuSerializer, MenuOptionSerializer, DibSerializer, MenuImageSerializer
+from .models import Restaurant, Menu, MenuOption, Dib, MenuImage, Qrcode
+from .serializers import RestaurantSerializer, MenuSerializer, MenuOptionSerializer, DibSerializer, MenuImageSerializer, QrcodeSerializer
 
+from django.utils import timezone
+import logging
 
 # 웹뷰웹 형식의 HTML 파일을 리턴할 코드
 from django.views.generic import TemplateView
@@ -376,14 +378,51 @@ class DibViewSet(viewsets.ModelViewSet):
         active_likes_count = Dib.objects.filter(storeId=storeId,status='활성화').count()
         return Response({'좋아요한 수 ':active_likes_count})
 
+# ============================================================
+# Qrcode
+
+class QrcodeAPIView(APIView):
+    """
+    POST 요청을 받으면 Qrcode 데이터베이스에 저장하고 GET 요청을 받으면 내용을 조회합니다.
+    """
+    def post(self, request, format=None):
+        serializer = QrcodeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, format=None):
+        queryset = Qrcode.objects.all()
+        serializer = QrcodeSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
+# 반납 QR코드
 
+logger = logging.getLogger(__name__)
 
+class VerifyQrcodeAPIView(APIView):
+    def post(self, request, format=None):
+        user_id = request.data.get('userId')
+        order_id = request.data.get('orderId')
 
+        if not user_id or not order_id:
+            return Response({"error": "userId and orderId are required."}, status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            qrcode = Qrcode.objects.filter(userId=user_id, orderId=order_id).first()
+            if not qrcode:
+                return Response({"error": "QR code not found."}, status=status.HTTP_404_NOT_FOUND)
 
+            qrcode.return_date = timezone.now()
+            qrcode.status = '반납'
+            qrcode.save()
 
+            return Response({"message": "QR code verified and return date updated."}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"Unexpected error: {e}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # # CreateAPIView 사용
