@@ -36,16 +36,21 @@ class LoginView(generics.GenericAPIView):
     authentication_classes = []
     permission_classes = [AllowAny]
 
+#    def post(self, request):
+#
+#        user = request.user
+#        serializer = self.get_serializer(data=request.data)
+#        serializer.is_valid(raise_exception = True)
+#        token = serializer.validated_data
+#
+#        print("token:",token)
+#        return Response({"token":token.key,"id":user.id}, status = status.HTTP_200_OK)
     def post(self, request):
-
-        user = request.user
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception = True)
-        token = serializer.validated_data
-
-        print("token:",token)
-        return Response({"token":token.key,"id":user.id}, status = status.HTTP_200_OK)
-
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({"token": token.key, "id": user.id}, status=status.HTTP_200_OK)
 
     
 from django.views.decorators.csrf import csrf_exempt

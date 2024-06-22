@@ -48,17 +48,24 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required = True)
     password = serializers.CharField(required = True, write_only = True)
+    # def validate(self, data):
+    #     user = authenticate(**data)
+    #     print(user)
+    #     if user:
+    #         token = Token.objects.get(user=user)
+    #         print(token)
+    #         return token
+    #     raise serializers.ValidationError(
+    #         {"error":"Unable to log in with provided credentials"}
+    #     )
     def validate(self, data):
         user = authenticate(**data)
-        print(user)
         if user:
-            token = Token.objects.get(user=user)
-            print(token)
-            return token
+            # print("user"+user)
+            return {'user': user}
         raise serializers.ValidationError(
-            {"error":"Unable to log in with provided credentials"}
+            {"error": "Unable to log in with provided credentials"}
         )
-
 
 
 class CustomUserSerializer(serializers.ModelSerializer):

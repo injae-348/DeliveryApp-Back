@@ -174,13 +174,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 해당 URL에서의 요청 허용
 모든 출처에서의 요청 허용
 '''
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:3000',
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ORIGIN_ALLOW_ALL = True
 
