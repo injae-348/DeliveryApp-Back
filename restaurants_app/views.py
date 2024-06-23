@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny
 from .permissions import IsRestaurantAdminOrReadOnly, CustomListRetrievePermission, IsOwnerOrReadOnly, IsOwnerOrReadOnlyOption
-
 from .models import Restaurant, Menu, MenuOption, Dib, MenuImage, Qrcode
 from .serializers import RestaurantSerializer, MenuSerializer, MenuOptionSerializer, DibSerializer, MenuImageSerializer, QrcodeSerializer
 
@@ -403,9 +403,13 @@ class QrcodeAPIView(APIView):
 logger = logging.getLogger(__name__)
 
 class VerifyQrcodeAPIView(APIView):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+    
     def post(self, request, format=None):
         user_id = request.data.get('userId')
         order_id = request.data.get('orderId')
+        
 
         if not user_id or not order_id:
             return Response({"error": "userId and orderId are required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -418,7 +422,6 @@ class VerifyQrcodeAPIView(APIView):
             qrcode.return_date = timezone.now()
             qrcode.status = '반납'
             qrcode.save()
-
             return Response({"message": "QR code verified and return date updated."}, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(f"Unexpected error: {e}")
